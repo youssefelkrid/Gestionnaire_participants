@@ -8,6 +8,8 @@ const form = document.getElementById("form");
 const emailError = document.getElementById("email-error");
 const nameerror = document.getElementById("nameerror");
 const Ajouterform = document.getElementById("Ajouterform");
+const recherche = document.getElementById("recherche");
+const catigorue = document.getElementById("catigorue");
 
 form.addEventListener("submit", function (e) {
     e.preventDefault();
@@ -33,7 +35,7 @@ let participants = [];
 
 form.addEventListener("submit", function (e) {
     e.preventDefault();
- 
+
 
     let participant = {
         name: name.value,
@@ -41,29 +43,30 @@ form.addEventListener("submit", function (e) {
         email: email.value
     }
     participants.push(participant);
-     localStorage.setItem("participants", JSON.stringify(participants));
-      showcart(participants);
-   
+    localStorage.setItem("participants", JSON.stringify(participants));
+    showcart(participants);
+
     total_participants.textContent = participants.length;
 
-    // console.log(participants);
-       form.reset() = "";
+   
+    form.reset() = "";
 })
 
 
- function showcart(data){
-Ajouterform.innerHTML = "" ;
+function showcart(data) {
+    Ajouterform.innerHTML = "";
 
-data.forEach(element => {
-const div = document.createElement("div");
+    data.forEach(element => {
+        const div = document.createElement("div");
 
 
-div.innerHTML += `
+        div.innerHTML += `
    
 <div class="flex items-center gap-5 w-full bg-white border border-gray-200 rounded-2xl px-6 py-5">
 
  
   <input
+ 
     type="checkbox"
     class="w-6 h-6 shrink-0 rounded-md border-gray-300 accent-emerald-600 cursor-pointer"
   />
@@ -93,12 +96,44 @@ div.innerHTML += `
 </div>
 
 `
-Ajouterform.append(div);
-});
+       const checkbox = div.querySelector('input[type="checkbox"]');
+
+        Ajouterform.append(div);
+
+        checkbox.addEventListener("change", function () {
+
+            const checked = Ajouterform.querySelectorAll('input[type="checkbox"]:checked');
+
+            total_selection.textContent = checked.length;
+        });
+    });
    
-  
- }
-   
+
+
+}
+
+recherche.addEventListener("input" , function(){
+    const recherch = recherche.value ;
+
+    const names = participants.filter(nom => {
+        return nom.name.toUpperCase().includes(recherch.toUpperCase());
+    })
+
+    showcart(names);
+})
+catigorue.addEventListener("click", function(e){
+     const catigore = e.target.dataset.catigorue ;
+
+     const catalougs = participants.filter(cataloge => {
+
+          return cataloge.formation.toUpperCase().includes(catigore.toUpperCase())
+     })
+
+     showcart(catalougs);
+})
+
+
+
 
 
 
