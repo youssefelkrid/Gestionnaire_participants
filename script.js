@@ -11,6 +11,7 @@ const Ajouterform = document.getElementById("Ajouterform");
 const recherche = document.getElementById("recherche");
 const catigorue = document.getElementById("catigorue");
 
+
 form.addEventListener("submit", function (e) {
     e.preventDefault();
 
@@ -48,12 +49,13 @@ form.addEventListener("submit", function (e) {
 
     total_participants.textContent = participants.length;
 
-   
+
     form.reset() = "";
 })
 
 
 function showcart(data) {
+
     Ajouterform.innerHTML = "";
 
     data.forEach(element => {
@@ -62,7 +64,7 @@ function showcart(data) {
 
         div.innerHTML += `
    
-<div class="flex items-center gap-5 w-full bg-white border border-gray-200 rounded-2xl px-6 py-5">
+     <div class="card flex items-center gap-5 w-full bg-white border border-gray-200 rounded-2xl px-6 py-5">
 
  
   <input
@@ -89,14 +91,17 @@ function showcart(data) {
   </span>
 
   
-  <button class="shrink-0 ml-3 text-gray-400 hover:text-red-500 transition">
-    
-  </button>
+  
+   <button data-action="delete">
+        <img class="w-6 h-6" src="img/supprimer.png">
+    </button>
 
 </div>
 
 `
-       const checkbox = div.querySelector('input[type="checkbox"]');
+       
+
+        const checkbox = div.querySelector('input[type="checkbox"]');
 
         Ajouterform.append(div);
 
@@ -107,13 +112,22 @@ function showcart(data) {
             total_selection.textContent = checked.length;
         });
     });
-   
+    Ajouterform.addEventListener("click" , function(e){
+         const btn = e.target.closest('[data-action="delete"]');
+         const card =  btn.closest('.card') ;
+         card.remove();
+       })
+       
+
+    
+       
+
 
 
 }
 
-recherche.addEventListener("input" , function(){
-    const recherch = recherche.value ;
+recherche.addEventListener("input", function () {
+    const recherch = recherche.value;
 
     const names = participants.filter(nom => {
         return nom.name.toUpperCase().includes(recherch.toUpperCase());
@@ -121,15 +135,15 @@ recherche.addEventListener("input" , function(){
 
     showcart(names);
 })
-catigorue.addEventListener("click", function(e){
-     const catigore = e.target.dataset.catigorue ;
+catigorue.addEventListener("click", function (e) {
+    const catigore = e.target.dataset.catigorue;
 
-     const catalougs = participants.filter(cataloge => {
+    const catalougs = participants.filter(cataloge => {
 
-          return cataloge.formation.toUpperCase().includes(catigore.toUpperCase())
-     })
+        return cataloge.formation.toUpperCase().includes(catigore.toUpperCase())
+    })
 
-     showcart(catalougs);
+    showcart(catalougs);
 })
 
 
